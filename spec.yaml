@@ -1,0 +1,22 @@
+blueprint:
+  id: wax-organic-activity-fingerprinter
+  tier: forensics-behavioral
+  status: alpha-ready
+  benchmark_target: PX-Perfection-Standard-v1.0
+
+features:
+  - humanity_certainty_index
+  - transaction_entropy_analysis
+  - zero_variance_bot_detection
+  - interactive_timeline_scatter
+
+recommended_stack:
+  data: Hyperion history
+  computation: client_side_statistical_analysis
+  viz: timeline_scatter + certainty_gauge
+
+machine_instructions:
+  - "Build single-wallet forensic terminal for Humanity Certainty Index"
+  - "Implement entropy and variance analysis of action timings"
+  - "Create clear visual dashboard with timeline scatter and pattern flags"
+  - "Add educational explanations of behavioral entropy concepts"
