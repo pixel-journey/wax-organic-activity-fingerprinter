@@ -1,5 +1,8 @@
 # wax-organic-activity-fingerprinter
 
+> **Trust Label:** `educational-reference`  
+> **Verification:** See [VERIFICATION-LOG.md](VERIFICATION-LOG.md) for honest status of all claims (currently UNTESTED except the explicit non-identity-verification note).
+
 > **Status:** 🔄 Deep Refinement (PX Perfection Standard v1.1)  
 > **Category:** Behavioral analytics / light forensics  
 > **Parent Catalog:** [wax-ecosystem-blueprint-catalog](https://github.com/pixel-journey/wax-ecosystem-blueprint-catalog)
