@@ -1,22 +1,38 @@
 blueprint:
   id: wax-organic-activity-fingerprinter
+  name: Organic Activity Fingerprinter
   tier: forensics-behavioral
-  status: alpha-ready
-  benchmark_target: PX-Perfection-Standard-v1.0
+  category: analytics
+  status: refined
+  version: "0.5.0"
+  last_refined: "2026-10-18"
+
+metadata:
+  description: |
+    Pure timing-interval statistics and a heuristic Humanity Certainty Index
+    for WAX action histories. Educational — not identity verification.
+  related_blueprints:
+    - wax-temporal-behavior-heatmap
+    - wax-funding-trail-lineage-graph
+
+invariants:
+  - Core math is pure and deterministic
+  - HCI labeled heuristic only
+  - Small samples and near-zero variance emit flags
+  - Must not present random scores as analysis
 
 features:
-  - humanity_certainty_index
-  - transaction_entropy_analysis
-  - zero_variance_bot_detection
-  - interactive_timeline_scatter
-
-recommended_stack:
-  data: Hyperion history
-  computation: client_side_statistical_analysis
-  viz: timeline_scatter + certainty_gauge
+  implemented:
+    - computeIntervals, computeIntervalStats, fingerprintTimestamps
+    - CertaintyGauge, StatsPanel, FlagsList, demo
+    - app page wired to real engines
 
 machine_instructions:
-  - "Build single-wallet forensic terminal for Humanity Certainty Index"
-  - "Implement entropy and variance analysis of action timings"
-  - "Create clear visual dashboard with timeline scatter and pattern flags"
-  - "Add educational explanations of behavioral entropy concepts"
+  - Use examples/engines.ts — never Math.random for HCI
+  - Feed Hyperion timestamps at the app edge only
+  - Always surface disclaimer: not ban-grade alone
+
+technical_requirements:
+  framework: Next.js + TypeScript
+  styling: Tailwind CSS
+  data: Hyperion history (production)
