@@ -1,115 +1,97 @@
-# wax-organic-activity-fingerprinter — Organic Activity Fingerprinter
+# wax-organic-activity-fingerprinter
 
-> **Status:** ✅ **FULL PX PERFECTION (Alpha-Ready)** | July 2026  
-> **Category:** Community Forensics & Behavioral Analytics  
-> **Parent Catalog:** [pixel-journey/wax-ecosystem-blueprint-catalog](https://github.com/pixel-journey/wax-ecosystem-blueprint-catalog)
-> **Benchmark:** gkniftyheads-tracker + Pixel Journey PX Perfection Standard v1.0
+> **Status:** 🔄 Deep Refinement (PX Perfection Standard v1.1)  
+> **Category:** Behavioral analytics / light forensics  
+> **Parent Catalog:** [wax-ecosystem-blueprint-catalog](https://github.com/pixel-journey/wax-ecosystem-blueprint-catalog)
 
-**Goal:** A single-wallet forensic terminal that calculates a "Humanity Certainty Index" by analyzing the entropy and variance of transaction timing patterns. Clearly distinguishes natural human behavior from mechanical, script-driven activity.
+**Goal:** Educational toolkit that turns a series of **action timestamps** into transparent **interval statistics**, flags, and a **heuristic Humanity Certainty Index (HCI)** — so teams can discuss organic vs mechanical timing without black-box magic.
 
----
-
-## Educational Core (Why This Exists)
-
-Bots and scripts often exhibit near-zero variance in action timing (exact cron-like intervals), while humans show natural randomness, daily rhythms, and sleep patterns. This tool quantifies that difference visually and mathematically.
-
-**Common Pitfalls This Tool Addresses**:
-- Judging accounts by volume alone without behavioral context
-- Missing obvious bot signals hidden in consistent timing
-- Overwhelming analysts with raw timestamps instead of clear statistical summaries
-- Making airdrop or governance decisions without behavioral evidence
-
-**Learning Outcomes**:
-After studying this blueprint, you should be able to:
-- Understand transaction entropy and timing variance as behavioral signals
-- Calculate and interpret Humanity Certainty Index
-- Build forensic tools that detect mechanical vs organic patterns
-- Design clear, auditable visualizations for behavioral analysis
+> **This is not identity verification.** Low variance can be a bot *or* a human with a rigid habit. High variance can still be a sophisticated script. Use as one weak signal among many.
 
 ---
 
-## Tech Recommendations Matrix
+## What changed in this refinement
 
-| Component             | Recommended                     | Alternative              | Why Chosen                                           | When to Choose Alternative          |
-|-----------------------|---------------------------------|--------------------------|------------------------------------------------------|-------------------------------------|
-| Data Source           | Hyperion history                | Light-API                | Fast, indexed, production-ready on WAX               | When you need custom deep queries    |
-| Entropy Calculation   | Client-side statistical analysis| Server-side ML           | Transparent, auditable, educational                  | When you need complex pattern recognition |
-| Visualization         | Timeline scatter + gauge        | Simple list of stats     | Clear visual differentiation of human vs bot         | When targeting power users only      |
+Earlier UI used **random numbers** for the index. That is gone. Core math now lives in pure functions:
+
+- `computeIntervals` / `computeIntervalStats`
+- `humanityCertaintyFromStats` / `fingerprintTimestamps`
+- Demo organic vs fixed-60s series for teaching
 
 ---
 
-## Machine-Optimized Spec (spec.yaml)
+## Quick Start
 
-```yaml
-blueprint:
-  id: wax-organic-activity-fingerprinter
-  tier: forensics-behavioral
-  status: alpha-ready
-  benchmark_target: PX-Perfection-Standard-v1.0
+1. Read limitations in §1.
+2. Import `fingerprintTimestamps` from `examples/engines.ts`.
+3. Feed Unix-second timestamps from Hyperion (or any history API).
+4. Render `CertaintyGauge`, `StatsPanel`, `FlagsList`.
 
-features:
-  - humanity_certainty_index
-  - transaction_entropy_analysis
-  - zero_variance_bot_detection
-  - interactive_timeline_scatter
+```ts
+import { fingerprintTimestamps } from "./examples/engines";
 
-recommended_stack:
-  data: Hyperion history
-  computation: client_side_statistical_analysis
-  viz: timeline_scatter + certainty_gauge
-
-machine_instructions:
-  - "Build single-wallet forensic terminal for Humanity Certainty Index"
-  - "Implement entropy and variance analysis of action timings"
-  - "Create clear visual dashboard with timeline scatter and pattern flags"
-  - "Add educational explanations of behavioral entropy concepts"
+const result = fingerprintTimestamps([1700000000, 1700000400, 1700004000]);
+// result.humanityCertaintyIndex, result.flags, result.intervals
 ```
 
 ---
 
-## Ecosystem Synergy
+## 1. Educational Core
 
-This tool pairs extremely well with:
-- `wax-account-sybil-distance-scorer` — Add behavioral entropy signals to Sybil analysis
-- `wax-temporal-behavior-heatmap` — Combine with 24/7 activity patterns
-- `wax-funding-trail-lineage-graph` — Cross-reference with funding origins
-- Future governance and airdrop fairness tools
+| Idea | Meaning |
+|------|--------|
+| **Inter-action interval** | Seconds between consecutive actions |
+| **Std dev / CV** | How steady the cadence is |
+| **Near-zero variance** | Cron-like or highly regular behavior |
+| **HCI** | 0–100 heuristic from CV + sample size + penalties |
 
-It establishes a reusable behavioral forensics pattern.
+### Limitations (read these)
+
+- Timing only — ignores funding graphs, asset graphs, social graph
+- Short histories are noisy (flagged)
+- Should not be the sole input to bans or airdrops
+
+### Learning outcomes
+
+- Compute interval stats from timestamps
+- Interpret CV and near-zero variance flags
+- Wire Hyperion history into the same pure pipeline
 
 ---
 
-## Implementation Highlights
+## 2. Architecture
 
-Full production code committed with:
-- Entropy and variance calculation engine
-- Zero-variance bot detection
-- Interactive timeline scatter visualization
-- Clear Humanity Certainty Index gauge
-- Demo mode with realistic human vs bot profiles
-
----
-
-## How to Run
-```bash
-git clone https://github.com/pixel-journey/wax-organic-activity-fingerprinter.git
-npm install
-npm run dev
+```
+timestamps[] → intervals → stats → HCI + flags → UI panels
 ```
 
-Analyze any WAX address for human-like vs mechanical behavior.
+Hyperion fetch stays at the app edge; engines stay pure and testable.
 
 ---
 
-## PX Perfection Alignment
+## 3. Integration levels
 
-This implementation targets:
-- Educational Depth: Strong explanations + learning outcomes
-- Documentation Layers: Excellent README + spec.yaml + ecosystem links
-- Machine Readiness: Detailed spec.yaml with AI instructions
-- Visual Design: Clean terminal-style interface with retro pixel polish
-- Ecosystem Synergy: Explicit companion relationships documented
+| Level | Scope |
+|-------|--------|
+| **Minimal** | `fingerprintTimestamps` + print stats |
+| **Recommended** | Gauge + stats + flags + disclaimer |
+| **Advanced** | Batch wallets, combine with funding-trail / heatmap tools |
 
-Future iterations will add advanced statistical analysis, batch processing, and deeper integration examples.
+---
 
-*Pixel Journey — Raising the bar for behavioral forensics tooling.*
+## 4. Ecosystem position
+
+Pairs with:
+- `wax-temporal-behavior-heatmap`
+- `wax-funding-trail-lineage-graph`
+- Sybil / airdrop fairness tools (when present)
+
+---
+
+## 5. License
+
+MIT — **Pixel Journey**
+
+*Exemplifies [PX Perfection Standard](https://github.com/pixel-journey/wax-ecosystem-blueprint-catalog/blob/main/PX-PERFECTION-STANDARD.md) v1.1 — honesty over inflated status labels.*
+
+*Last major refinement pass: October 2026*
