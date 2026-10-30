@@ -6,7 +6,9 @@ import {
   demoOrganicTimestamps,
   fingerprintTimestamps,
 } from '../examples/engines';
+import { downloadText, exportFingerprintMarkdown } from '../examples/exportReport';
 import { fetchAccountActionTimestamps } from '../examples/live/hyperion';
+import { HCI_MYTHS } from '../examples/myths';
 
 type Mode = 'live' | 'organic' | 'mechanical';
 
@@ -15,6 +17,7 @@ export default function OrganicActivityFingerprinter() {
   const [account, setAccount] = useState('eosio');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [status, setStatus] = useState<string | null>(null);
   const [liveTs, setLiveTs] = useState<number[] | null>(null);
   const [meta, setMeta] = useState<string | null>(null);
 
@@ -32,6 +35,7 @@ export default function OrganicActivityFingerprinter() {
   );
 
   const result = mode === 'live' ? liveResult : demoResult;
+  const label = mode === 'live' ? account : mode;
 
   const runLive = useCallback(async () => {
     setLoading(true);
@@ -61,9 +65,32 @@ export default function OrganicActivityFingerprinter() {
         <div className="text-2xl tracking-widest text-emerald-400 mb-2 font-bold">
           ORGANIC ACTIVITY FINGERPRINTER
         </div>
-        <div className="text-xs opacity-60 mb-6">
-          Pixel Journey · Live Hyperion or demo · Not identity proof
+        <div className="text-xs opacity-60 mb-2">
+          Pixel Journey · educational-reference · not identity proof
         </div>
+        <p className="text-xs opacity-50 mb-6 max-w-2xl">
+          HCI rewards timing variance. Soft signal only — never ban from this score
+          alone.
+        </p>
+
+        <section
+          className="rounded-2xl border border-fuchsia-500/25 bg-fuchsia-500/5 p-4 text-xs space-y-3 max-w-2xl mb-6"
+          aria-label="Myths"
+        >
+          <h2 className="text-sm font-semibold text-fuchsia-100">Myths vs reality</h2>
+          {HCI_MYTHS.map((m) => (
+            <div key={m.myth}>
+              <p className="text-red-200/90">
+                <span className="opacity-60">Myth: </span>
+                {m.myth}
+              </p>
+              <p className="text-emerald-100/90 mt-0.5">
+                <span className="opacity-60">Reality: </span>
+                {m.reality}
+              </p>
+            </div>
+          ))}
+        </section>
 
         <div className="flex flex-wrap gap-2 mb-6">
           <button
@@ -119,6 +146,11 @@ export default function OrganicActivityFingerprinter() {
             {error}
           </div>
         )}
+        {status && (
+          <p className="mb-4 text-xs text-emerald-200/80" role="status">
+            {status}
+          </p>
+        )}
         {meta && (
           <div className="mb-4 text-xs opacity-50 break-all">{meta}</div>
         )}
@@ -162,6 +194,21 @@ export default function OrganicActivityFingerprinter() {
               </div>
             </div>
 
+            <button
+              type="button"
+              className="mt-4 px-3 py-2 text-xs rounded-lg bg-emerald-900"
+              onClick={() => {
+                downloadText(
+                  `${label}-hci.md`,
+                  exportFingerprintMarkdown(label, result),
+                  'text/markdown;charset=utf-8'
+                );
+                setStatus('Report downloaded');
+              }}
+            >
+              Download MD
+            </button>
+
             <ul className="mt-6 space-y-2 text-xs opacity-80">
               {result.flags.map((f) => (
                 <li key={f.id}>
@@ -179,9 +226,9 @@ export default function OrganicActivityFingerprinter() {
         )}
 
         <p className="text-xs opacity-60 leading-relaxed">
-          Live: Hyperion → timestamps →{' '}
-          <code className="text-emerald-400/80">fingerprintTimestamps</code>. Do not
-          use this score alone for bans or airdrop exclusion.
+          Live: Hyperion →{' '}
+          <code className="text-emerald-400/80">fingerprintTimestamps</code>. Trio:
+          anomaly-detector · temporal-heatmap. See POLICY.md.
         </p>
       </div>
     </div>
