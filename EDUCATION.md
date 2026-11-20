@@ -7,7 +7,7 @@
 
 | Level | After this file |
 | --- | --- |
-| Beginner | Run the organic demo and the fixed-60 s demo and see the organic index higher |
+| Beginner | Run both demos: organic index `53` (`mixed`), mechanical index `5` (`likely_mechanical`). A sample of 3 timestamps is `45`. |
 | Intermediate | Explain why low variance plus enough samples lowers the index, and why small samples stay near 45 |
 | Masterclass | Say why a timing index is only one weak signal, and what the lab still refuses to claim |
 
@@ -19,11 +19,18 @@
 const organic = fingerprintTimestamps(demoOrganicTimestamps(28));
 const mechanical = fingerprintTimestamps(demoMechanicalTimestamps(28));
 
-organic.humanityCertaintyIndex > mechanical.humanityCertaintyIndex
+organic.humanityCertaintyIndex === 53
+organic.classification === "mixed"
+organic.flags // ["neutral"]
+
+mechanical.humanityCertaintyIndex === 5
 mechanical.classification === "likely_mechanical"
+mechanical.flags // ["near-zero-variance", "mechanical-lean"]
+
+fingerprintTimestamps([1, 2, 3]).humanityCertaintyIndex === 45
 ```
 
-The organic demo adds jittered gaps of hundreds to thousands of seconds. The mechanical demo adds a fixed 60 s every step. Both start from the same base timestamp.
+`likely_organic` starts at `70`. The jittered demo does not reach it. Fixed 60-second gaps have standard deviation `0`, so the near-zero penalty applies and the index floors at `5`. A sample shorter than 5 is exactly `45`, which classifies as `mixed` because the mixed band starts at 45.
 
 ### Words
 

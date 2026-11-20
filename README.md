@@ -1,7 +1,7 @@
 # Interval variance into a soft Humanity Certainty Index
 
 > **Trust:** `educational-reference`  
-> **Catalog:** [wax-ecosystem-blueprint-catalog](https://github.com/pixel-journey/wax-ecosystem-blueprint-catalog)
+> **Catalog:** `wax-ecosystem-blueprint-catalog` (private index; not this public course)
 
 **One-sentence goal:** Teach pure interval statistics that map coefficient of variation into a 0–100 Humanity Certainty Index, with organic-jitter versus fixed-60 s demos — without claiming identity verification.
 
@@ -13,18 +13,17 @@ The course is [EDUCATION.md](EDUCATION.md) (beginner, intermediate, masterclass)
 
 | Rule | Result |
 | --- | --- |
-| organic demo (28) HCI | greater than mechanical demo HCI |
-| mechanical demo classification | `likely_mechanical` |
-| sampleSize < 5 or intervals < 4 | index forced to 45 |
-| stdDev < 2 and count ≥ 8 | near-zero penalty of 25 |
-| flags | small-sample, near-zero-variance, high-cv, mechanical-lean, or neutral |
+| organic demo (28) | HCI `53`, classification `mixed`, flag `neutral` |
+| mechanical demo (28) | HCI `5`, classification `likely_mechanical`, flags `near-zero-variance` and `mechanical-lean` |
+| three timestamps | HCI `45` |
+| `likely_organic` | starts at `70`. The jittered demo does not reach it. |
 
 ## What is in the repo
 
 | Piece | Role |
 | --- | --- |
 | `examples/engines.ts` | intervals, stats, HCI formula, flags, demos |
-| `examples/engines.test.ts` | organic > mechanical, mechanical classification |
+| `examples/engines.test.ts` | the locked indexes above |
 | `examples/live/hyperion.ts` | optional soft-fail timestamp fetch (not in unit tests) |
 | `app/page.tsx` | interactive demo |
 | Docs | EDUCATION · POLICY · ARCHITECTURE · VERIFICATION-LOG |
