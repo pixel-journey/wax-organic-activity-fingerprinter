@@ -8,6 +8,14 @@
 | Near-zero stdDev with enough intervals | penalty; mechanical demo → HCI **5** |
 | Organic jitter demo | HCI **53**, classification `mixed` |
 
+## Soft-signal floor triad
+
+| Lab | Small-sample / floor |
+| --- | --- |
+| **This (HCI)** | <5 timestamps → **45** |
+| [anomaly](https://github.com/pixel-journey/wax-behavioral-anomaly-detector) | 3 timestamps → **25** |
+| [churn](https://github.com/pixel-journey/wax-player-churn-predictor) | critical ≥**80**; silent 79 = high |
+
 ## Not closed (production)
 
 | Concern | Guidance |
