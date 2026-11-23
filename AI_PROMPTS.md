@@ -1,19 +1,24 @@
-# AI_PROMPTS.md — Organic Activity Fingerprinter
+# AI handoff — Humanity Certainty Index
 
-## 1. Analyze timestamps
+## Non-negotiables
 
-```
-Given these Unix-second action timestamps [array], run fingerprintTimestamps and explain stats, HCI, and flags in plain language. Stress limitations.
-```
+1. Organic demo (28 timestamps) → HCI **53**, classification **`mixed`**, flag `neutral`.
+2. Mechanical fixed 60 s gaps → HCI **5**, **`likely_mechanical`**, near-zero flags.
+3. Sample of **3** timestamps → HCI **45** (early return). Small sample: fewer than 5 timestamps or fewer than 4 intervals.
+4. Bands: `likely_organic` ≥70, `mixed` ≥45, else `likely_mechanical`.
+5. Formula: CV score, sample boost, near-zero penalty when stdDev < 2 and count ≥ 8; final roughly clamp 5–98.
+6. **Not** identity. **Not** a ban authority. HCI ≥70 is not proof of a human.
+7. Unit path uses pure local arrays. Do not call Hyperion inside unit tests.
 
-## 2. Hyperion wiring
+## Prompt seeds
 
-```
-Sketch fetching last N actions for an account from Hyperion and mapping block/timestamp fields into fingerprintTimestamps.
-```
+- "Organic vs mechanical demo — HCI and classification."
+- "Three timestamps — index?"
+- "Refuse a policy that bans on low HCI alone."
+- "Contrast with the anomaly detector (low CV raises anomaly there)."
 
-## 3. Policy use
+## Do not
 
-```
-Draft a policy note: how a community might use HCI as a soft signal for airdrops without treating it as sole exclusion criteria.
-```
+- Treat HCI as KYC or sole airdrop exclusion.
+- Call the mechanical demo "always a bot."
+- Fetch live Hyperion in the pure score path.
